@@ -10,7 +10,9 @@ import { removeSourceHandler } from './remove-source'
 
 export default async function campaignRoutes(app: FastifyInstance) {
   // Creator: create campaign
-  app.post('/', { schema: createSchema, onRequest: [app.authenticate] }, createHandler)
+  app.post<{ Body: { title: string; description: string } }>(
+    '/', { schema: createSchema, onRequest: [app.authenticate] }, createHandler
+  )
 
   // Creator: list own campaigns
   app.get('/my', { schema: listMySchema, onRequest: [app.authenticate] }, listMyHandler)
@@ -19,17 +21,27 @@ export default async function campaignRoutes(app: FastifyInstance) {
   app.get('/', { schema: listActiveSchema, onRequest: [app.authenticate] }, listActiveHandler)
 
   // Any auth user: get single campaign with sources
-  app.get('/:id', { schema: getOneSchema, onRequest: [app.authenticate] }, getOneHandler)
+  app.get<{ Params: { id: string } }>(
+    '/:id', { schema: getOneSchema, onRequest: [app.authenticate] }, getOneHandler
+  )
 
   // Creator: update campaign
-  app.put('/:id', { schema: updateSchema, onRequest: [app.authenticate] }, updateHandler)
+  app.put<{ Params: { id: string }; Body: { title?: string; description?: string; guidelines?: string; payout_per_view?: number; payout_fixed?: number; status?: 'active' | 'inactive' | 'completed' } }>(
+    '/:id', { schema: updateSchema, onRequest: [app.authenticate] }, updateHandler
+  )
 
   // Creator: delete campaign
-  app.delete('/:id', { onRequest: [app.authenticate] }, deleteHandler)
+  app.delete<{ Params: { id: string } }>(
+    '/:id', { onRequest: [app.authenticate] }, deleteHandler
+  )
 
   // Creator: add video source
-  app.post('/:id/sources', { schema: addSourceSchema, onRequest: [app.authenticate] }, addSourceHandler)
+  app.post<{ Params: { id: string }; Body: { youtube_url: string } }>(
+    '/:id/sources', { schema: addSourceSchema, onRequest: [app.authenticate] }, addSourceHandler
+  )
 
   // Creator: remove video source
-  app.delete('/:id/sources/:sourceId', { onRequest: [app.authenticate] }, removeSourceHandler)
+  app.delete<{ Params: { id: string; sourceId: string } }>(
+    '/:id/sources/:sourceId', { onRequest: [app.authenticate] }, removeSourceHandler
+  )
 }

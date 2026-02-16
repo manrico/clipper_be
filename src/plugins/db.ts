@@ -11,7 +11,7 @@ async function dbPlugin(fastify: FastifyInstance) {
     conn.release()
     fastify.log.info('Database connected')
   } catch (err) {
-    fastify.log.error('Database connection failed:', err)
+    fastify.log.error('Database connection failed: ' + String(err))
     throw err
   }
 
