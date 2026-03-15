@@ -12,7 +12,7 @@ interface UpdateBody {
   platforms?: string[]
   language?: string
   deadline?: string
-  status?: 'active' | 'inactive' | 'completed'
+  status?: 'draft' | 'active' | 'inactive' | 'completed'
 }
 
 export const updateSchema = {
@@ -34,7 +34,7 @@ export const updateSchema = {
       platforms: { type: 'array', items: { type: 'string' } },
       language: { type: 'string', maxLength: 50 },
       deadline: { type: 'string', format: 'date' },
-      status: { type: 'string', enum: ['active', 'inactive', 'completed'] },
+      status: { type: 'string', enum: ['draft', 'active', 'inactive', 'completed'] },
     },
   },
 }

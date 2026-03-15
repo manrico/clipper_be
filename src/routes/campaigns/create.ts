@@ -67,5 +67,5 @@ export async function createHandler(
     ]
   )
 
-  return reply.code(201).send({ id, title, description, status: 'active' })
+  return reply.code(201).send({ id, title, description, status: 'draft' })
 }

@@ -30,6 +30,7 @@ src/
       001_init.sql     # base schema (users, campaigns, clips, payouts, invoices, support_requests)
       002_campaign_sources.sql  # campaign_sources table + guidelines nullable
       003_campaign_extended_fields.sql  # adds budget, platforms, language, deadline to campaigns
+      004_campaign_draft_status.sql     # adds 'draft' to status enum, changes default to 'draft'
   plugins/
     db.ts              # Fastify plugin — verifies DB connection on startup
   routes/
