@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { submitHandler, submitSchema } from './submit'
 import { listMyHandler, listMySchema } from './list-my'
 import { listByCampaignHandler, listByCampaignSchema } from './list-by-campaign'
+import { reviewHandler, reviewSchema } from './review'
 
 export default async function clipRoutes(app: FastifyInstance) {
   // Clipper: submit a clip
@@ -15,5 +16,10 @@ export default async function clipRoutes(app: FastifyInstance) {
   // Any auth: list clips for a campaign (scoped by role)
   app.get<{ Params: { campaignId: string } }>(
     '/campaign/:campaignId', { schema: listByCampaignSchema, onRequest: [app.authenticate] }, listByCampaignHandler
+  )
+
+  // Creator: approve or reject a clip
+  app.patch<{ Params: { id: string }; Body: { status: 'approved' | 'rejected'; rejection_reason?: string } }>(
+    '/:id/review', { schema: reviewSchema, onRequest: [app.authenticate] }, reviewHandler
   )
 }
