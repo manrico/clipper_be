@@ -7,6 +7,11 @@ interface UpdateBody {
   guidelines?: string
   payout_per_view?: number
   payout_fixed?: number
+  clip_length_max?: number
+  budget?: number
+  platforms?: string[]
+  language?: string
+  deadline?: string
   status?: 'active' | 'inactive' | 'completed'
 }
 
@@ -24,6 +29,11 @@ export const updateSchema = {
       guidelines: { type: 'string' },
       payout_per_view: { type: 'number', minimum: 0 },
       payout_fixed: { type: 'number', minimum: 0 },
+      clip_length_max: { type: 'integer', minimum: 1 },
+      budget: { type: 'number', minimum: 0 },
+      platforms: { type: 'array', items: { type: 'string' } },
+      language: { type: 'string', maxLength: 50 },
+      deadline: { type: 'string', format: 'date' },
       status: { type: 'string', enum: ['active', 'inactive', 'completed'] },
     },
   },
@@ -44,7 +54,10 @@ export async function updateHandler(
   ])
   if (!campaign) return reply.notFound('Campaign not found')
 
-  const { title, description, guidelines, payout_per_view, payout_fixed, status } = request.body
+  const {
+    title, description, guidelines, payout_per_view, payout_fixed,
+    clip_length_max, budget, platforms, language, deadline, status,
+  } = request.body
 
   const fields: string[] = []
   const values: unknown[] = []
@@ -54,6 +67,11 @@ export async function updateHandler(
   if (guidelines !== undefined) { fields.push('guidelines = ?'); values.push(guidelines) }
   if (payout_per_view !== undefined) { fields.push('payout_per_view = ?'); values.push(payout_per_view) }
   if (payout_fixed !== undefined) { fields.push('payout_fixed = ?'); values.push(payout_fixed) }
+  if (clip_length_max !== undefined) { fields.push('clip_length_max = ?'); values.push(clip_length_max) }
+  if (budget !== undefined) { fields.push('budget = ?'); values.push(budget) }
+  if (platforms !== undefined) { fields.push('platforms = ?'); values.push(JSON.stringify(platforms)) }
+  if (language !== undefined) { fields.push('language = ?'); values.push(language) }
+  if (deadline !== undefined) { fields.push('deadline = ?'); values.push(deadline) }
   if (status !== undefined) { fields.push('status = ?'); values.push(status) }
 
   if (fields.length === 0) return reply.badRequest('No fields to update')

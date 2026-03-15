@@ -29,6 +29,7 @@ src/
     migrations/
       001_init.sql     # base schema (users, campaigns, clips, payouts, invoices, support_requests)
       002_campaign_sources.sql  # campaign_sources table + guidelines nullable
+      003_campaign_extended_fields.sql  # adds budget, platforms, language, deadline to campaigns
   plugins/
     db.ts              # Fastify plugin — verifies DB connection on startup
   routes/
@@ -68,11 +69,11 @@ src/
 ### Campaigns (`/api/campaigns`)
 | Method | Path | Auth | Role | Description |
 |--------|------|------|------|-------------|
-| POST | `/` | JWT | creator | Create campaign |
+| POST | `/` | JWT | creator | Create campaign (title, description + optional: guidelines, payout_per_view, payout_fixed, clip_length_max, budget, platforms, language, deadline) |
 | GET | `/my` | JWT | creator | List own campaigns (with source/clip counts + thumbnail_video_id) |
 | GET | `/` | JWT | any | List all active campaigns |
 | GET | `/:id` | JWT | any | Get campaign + sources array |
-| PUT | `/:id` | JWT | creator | Update campaign fields |
+| PUT | `/:id` | JWT | creator | Update campaign fields (title, description, guidelines, payout_per_view, payout_fixed, clip_length_max, budget, platforms, language, deadline, status) |
 | DELETE | `/:id` | JWT | creator | Delete campaign |
 | POST | `/:id/sources` | JWT | creator | Add YouTube source URL |
 | DELETE | `/:id/sources/:sourceId` | JWT | creator | Remove source |

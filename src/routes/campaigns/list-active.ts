@@ -7,6 +7,7 @@ export async function listActiveHandler(request: FastifyRequest, reply: FastifyR
   const campaigns = await query(
     `SELECT
        c.id, c.title, c.description, c.status, c.payout_per_view, c.payout_fixed,
+       c.budget, c.platforms, c.language, c.deadline, c.clip_length_max, c.guidelines,
        c.created_at, u.name AS creator_name,
        COUNT(DISTINCT cs.id) AS source_count,
        COUNT(DISTINCT cl.id) AS clip_count,
