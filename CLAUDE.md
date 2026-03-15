@@ -36,7 +36,7 @@ src/
   routes/
     auth/              # register, login, me, verify-email
     campaigns/         # create, list-my, list-active, get-one, update, delete, add-source, remove-source
-    clips/             # submit, list-my, list-by-campaign, review
+    clips/             # submit, list-my, list-by-campaign, list-for-creator, review
   services/
     email.ts           # sendVerificationEmail()
   utils/
@@ -86,6 +86,7 @@ src/
 | POST | `/` | JWT | clipper | Submit a clip (campaign_id, title, video_url) |
 | GET | `/my` | JWT | clipper | List clipper's own clips with campaign title |
 | GET | `/campaign/:campaignId` | JWT | any | List clips for a campaign (clippers see own, creators see all) |
+| GET | `/for-creator` | JWT | creator | List all clips across creator's campaigns (with campaign_title, clipper_name) |
 | PATCH | `/:id/review` | JWT | creator | Approve or reject a clip (status + optional rejection_reason) |
 
 ## Feature Flags (`.env`)
