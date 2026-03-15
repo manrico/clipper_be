@@ -5,6 +5,7 @@ import sensible from '@fastify/sensible'
 import dbPlugin from './plugins/db'
 import authRoutes from './routes/auth'
 import campaignRoutes from './routes/campaigns'
+import clipRoutes from './routes/clips'
 
 export async function buildApp() {
   const app = Fastify({
@@ -49,6 +50,7 @@ export async function buildApp() {
   // Routes
   await app.register(authRoutes, { prefix: '/api/auth' })
   await app.register(campaignRoutes, { prefix: '/api/campaigns' })
+  await app.register(clipRoutes, { prefix: '/api/clips' })
 
   // Health check
   app.get('/api/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }))

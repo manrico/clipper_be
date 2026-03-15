@@ -35,6 +35,7 @@ src/
   routes/
     auth/              # register, login, me, verify-email
     campaigns/         # create, list-my, list-active, get-one, update, delete, add-source, remove-source
+    clips/             # submit, list-my, list-by-campaign
   services/
     email.ts           # sendVerificationEmail()
   utils/
@@ -77,6 +78,13 @@ src/
 | DELETE | `/:id` | JWT | creator | Delete campaign |
 | POST | `/:id/sources` | JWT | creator | Add YouTube source URL |
 | DELETE | `/:id/sources/:sourceId` | JWT | creator | Remove source |
+
+### Clips (`/api/clips`)
+| Method | Path | Auth | Role | Description |
+|--------|------|------|------|-------------|
+| POST | `/` | JWT | clipper | Submit a clip (campaign_id, title, video_url) |
+| GET | `/my` | JWT | clipper | List clipper's own clips with campaign title |
+| GET | `/campaign/:campaignId` | JWT | any | List clips for a campaign (clippers see own, creators see all) |
 
 ## Feature Flags (`.env`)
 - `EMAIL_VERIFICATION_ENABLED=false` — skip email verification on register/login (dev only)
